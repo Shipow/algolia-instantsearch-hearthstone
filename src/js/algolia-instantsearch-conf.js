@@ -540,5 +540,5 @@ searchstone.on('render', function() {
 
 });
 
-sunwell.init();
+
 searchstone.start();

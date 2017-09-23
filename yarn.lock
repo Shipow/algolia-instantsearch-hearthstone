@@ -5749,6 +5749,10 @@ sum-up@^1.0.1:
   dependencies:
     chalk "^1.0.0"
 
+sunwell:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/sunwell/-/sunwell-0.1.5.tgz#b5a0dd05d549422fd4c55fb26a28b4c278bf6d73"
+
 supports-color@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-0.2.0.tgz#d92de2694eb3f67323973d7ae3d8b55b4c22190a"

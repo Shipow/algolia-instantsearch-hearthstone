@@ -81,7 +81,13 @@ $> NODE_ENV=production gulp deploy
 
 ### UI
 
+### Sunwell (card generator lib)
+I'm running a modified version of the original lib, mostly some perf adjustments because i'm not using its text rendering.
+You need to add the image background and other card elements (like premium cards in Knight of the Frozen Throne). Check the updates on the original project. => https://github.com/HearthSim/Sunwell
+
+
 ### Sitemap
+- run gulp sitemap (todo: add to deploy)
 
 ### Top Decks
 

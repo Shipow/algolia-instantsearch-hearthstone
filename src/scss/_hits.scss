@@ -61,8 +61,15 @@
       max-width: 100%;
       opacity: 1;
       z-index: 2;
+      opacity: 0;
       transition: opacity .1s ease-in;
       outline: 0;
+      top: 14px;
+      left: 4px;
+      transform: scale(1.125);
+      &.loaded{
+        opacity: .9;
+      }
     }
 
     &.lang-ruRU,
@@ -75,8 +82,7 @@
       }
     }
   }
-
-  .placeholder {
+  .placeholder{
     position: absolute;
     width: 290px;
     height: 442px;

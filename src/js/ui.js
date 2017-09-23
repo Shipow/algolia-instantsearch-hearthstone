@@ -18,16 +18,12 @@ function closeLightbox() {
 }
 
 function cardDetail(el) {
-
-
   // hit reference
   var target = $(el).find('.hit').data('target');
   var hearthpwnID = $('#'+ target).data('hearthpwn');
-
   hearthpwn.helper.clearRefinements('cards');
   hearthpwn.helper.addFacetRefinement('cards', hearthpwnID );
   hearthpwn.helper.search();
-
 
   var position = $('#'+ target).data('position');
   var goldenAnimation = $('#'+ target).find('.golden-wrapper').data('golden');
@@ -54,9 +50,9 @@ function cardDetail(el) {
 
   //tracking goal
   dataLayer.push({'event': 'open_cardDetails'});
+
   //analytics.track('[SGMNT] Opened Card', {name: 'cardName',positon:'hitPosition'});
   _kmq.push(['record', '[KM] Opened Card', {'Clicked Hit Position': position, 'Card ID': target}]);
-
 }
 
 function removePlaceholder(el){
@@ -147,47 +143,68 @@ if (isChrome){
   cloudinaryUrl = 'https://res.cloudinary.com/hilnmyskv/image/upload/f_auto,';
 }
 
-sunwell.settings = {
-  titleFont: 'arial',
-  bodyFont: 'arial',
-  bodyFontSize: 24,
-  bodyLineHeight: 55,
-  bodyFontOffset: {x: 0, y: 0},
-  assetFolder: cloudinaryUrl + 'q_20,fl_lossy/',
-  textureFolder: cloudinaryUrl + 'w_300,q_60,fl_lossy/',
-  autoInit: false,
-  debug: false
+const sunwellOptions = {
+  assetFolder: cloudinaryUrl + 'q_20,fl_lossy/searchstone/',
+  debug: false,
+  cacheSkeleton: true,
+  maxActiveRenders: 6
 };
 
+const Sunwell = require("../js/vendor/sunwell.web.js");
+
+let sunwell = new Sunwell(sunwellOptions);
+
 window.sunwellRender = function(){
-$('.card-picture:visible').each(function(i,e){
+var cards = document.getElementsByClassName('card-picture');
+if (cards.length > 0){
+  for (let e of cards){
+    //console.log(e);
+      var cardObj = {};
+      cardObj.id = $(e).data("card-id");
+      cardObj.set = $(e).data("card-set");
+      cardObj.type = $(e).data("card-type").toUpperCase();
+      cardObj.rarity = $(e).data("card-rarity").toUpperCase();
+      cardObj.multiClassGroup = $(e).data("card-multiclassgroup");
+      cardObj.cardClass = $(e).data("card-playerclass").toUpperCase();
+      cardObj.texture = cloudinaryUrl + 'w_240,q_60,fl_lossy/' + $(e).data("card-id");
+      cardObj.cost = " ";
+      cardObj.durability = " ";
+      cardObj.attack = " ";
+      cardObj.health = " ";
+      // cardObj.name = "";
+      // cardObj.text = "";
 
-    var cardObj = {};
+      // name (string): The card's name
+      // text (string): The card's body text
+      // collectionText (string): The card's body text. Has precedence over text.
+      // raceText (string): The card's race as a string. Has precedence over race.
+      // cost (number): The card's cost.
+      // attack (number): The card's attack value (has no effect for spells).
+      // health (number): The card's health value (has no effect for spells).
+      // costsHealth (boolean): Set to true to render the card's cost as health.
+      // hideStats (boolean): Set to true to hide the attack/health textures and the cost value.
+      // silenced (boolean): Set to true to show the card as silenced (card text crossed out).
+      // language (string)
+      // type (enum CardType): The card's type (only MINION, SPELL and WEAPON are supported).
+      // cardClass (enum CardClass): The card's class. This determines the card frame to use.
+      // set (enum CardSet): Determines the body text background watermark.
+      //x rarity (enum Rarity): Determines the card's rarity gem. Note that COMMON cards from the CORE set will not show a rarity gem, despite not being FREE.
+      //x multiClassGroup (enum MultiClassGroup): Determines the card's multiclass banner.
+      // race (enum Race): The card's race.
+      //x texture
 
-    cardObj.id = $(e).data("card-id");
-    cardObj.set = $(e).data("card-set");
-    cardObj.type = $(e).data("card-type").toUpperCase();
-    cardObj.rarity = $(e).data("card-rarity").toUpperCase();
-    cardObj.cost = " ";
-    cardObj.multiClassGroup = $(e).data("card-multiclassgroup");
-    cardObj.durability = " ";
-    cardObj.attack = " ";
-    cardObj.health = " ";
-    cardObj.name = "";
-    cardObj.text = "";
-    cardObj.playerClass = $(e).data("card-playerclass");
-    cardObj.texture = $(e).data("card-id");
+      //quick fix
+      // if(cardObj.playerClass.length > 15 ){
+      //   cardObj.playerClass = "Neutral";
+      // }
+      // if ( $(e).data("card-race") !== ""){
+      //   cardObj.race = " ";
+      // }
 
-    //quick fix
-    if(cardObj.playerClass.length > 15 ){
-      cardObj.playerClass = "Neutral";
-    }
 
-    if ( $(e).data("card-race") !== ""){
-      cardObj.race = " ";
-    }
+      var card = sunwell.createCard(cardObj, 300, false, e, ()=>{e.className += " loaded"});
 
-    sunwell.createCard(cardObj, 300, e);
+    };
+}
 
-  });
 };
